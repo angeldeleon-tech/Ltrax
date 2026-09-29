@@ -247,6 +247,7 @@ body.viewer-mode .sharer-only{display:none}
       </svg>
       COMPARTIR
     </button>
+    <button class="btn" style="background:#128C7E;color:#fff" onclick="shareLater()">🕓 LATER</button>
     <button class="btn btn-stop" onclick="stopAndClear()">⏹ DETENER</button>
   </div>
 </div>
@@ -471,6 +472,18 @@ function shareWhatsApp() {
   const wa = `https://wa.me/?text=${encodeURIComponent(msg)}`;
   window.open(wa, '_blank');
   toast('✅ Abriendo WhatsApp…');
+}
+
+// Compartir por LaterWhats: abre LaterWhats con el mensaje y la liga ya
+// puestos (?body=…&source=livetrack); ahí se elige el contacto y se manda o
+// programa. Quien recibe abre la liga y ve el mapa sin login.
+function shareLater() {
+  if (!connected) { toast('⏳ Conectando, espera…'); return; }
+  const link = `${location.origin}${location.pathname}?v=${CODE}`;
+  const body = destName
+    ? `📍 Te comparto mi ubicación en vivo. Llego a: *${destName}*\n${link}`
+    : `📍 Te comparto mi ubicación en vivo:\n${link}`;
+  window.open('https://latherwhats.vercel.app/?' + new URLSearchParams({ body, source: 'livetrack' }), '_blank');
 }
 
 // ══════════════════════════════════════
